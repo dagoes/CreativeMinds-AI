@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Definición del menú principal -->
+        <menuitem 
+            id="menu_creativeminds_ai_root" 
+            name="CreativeMinds AI"
+            web_icon="creativeminds_ai,static/description/icon.png"
+            sequence="10"/>
+
+        <!-- Submenú principales -->
+        <menuitem 
+            id="menu_projects" 
+            name="Proyectos"
+            parent="menu_creativeminds_ai_root"
+            sequence="10"/>
+
+        <menuitem 
+            id="menu_employees" 
+            name="Empleados"
+            parent="menu_creativeminds_ai_root"
+            sequence="20"/>
+
+        <menuitem 
+            id="menu_teams" 
+            name="Equipos"
+            parent="menu_creativeminds_ai_root"
+            sequence="30"/>
+
+        <menuitem 
+            id="menu_control_panel" 
+            name="Panel de Control"
+            parent="menu_creativeminds_ai_root"
+            sequence="40"/>
+    </data>
+</odoo>
