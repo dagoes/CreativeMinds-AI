@@ -1,7 +1,25 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
-class CreativemindsAi(models.Model):
-    _name = 'creativeminds_ai'
-    _description = 'Creativeminds AI'
-    
-    name = fields.Char(string='Name')
+class CreativeMindsAI(models.Model):
+    _name = 'creativeminds.ai'
+    _description = 'Creative Minds AI Model'
+
+    name = fields.Char(string='Name', required=True)
+
+class Employees(models.Model):
+    _name = 'creativeminds.employees'
+    _description = 'Employees'
+
+    name = fields.Char(string='Name', required=True)
+
+class Teams(models.Model):
+    _name = 'creativeminds.teams'
+    _description = 'Teams'
+
+    name = fields.Char(string='Name', required=True)
+
+class ControlPanel(models.Model):
+    _name = 'creativeminds.control.panel'
+    _description = 'Control Panel'
+
+    name = fields.Char(string='Name', required=True)

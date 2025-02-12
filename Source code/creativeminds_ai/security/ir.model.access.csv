@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_creativeminds_ai_ai,creativeminds.ai,model_creativeminds_ai,base.group_user,1,1,1,1
+access_creativeminds_ai,access.creativeminds.ai,model_creativeminds_ai,base.group_user,1,1,1,1
+access_creativeminds_employees,access.creativeminds.employees,model_creativeminds_employees,base.group_user,1,1,1,1
+access_creativeminds_teams,access.creativeminds.teams,model_creativeminds_teams,base.group_user,1,1,1,1
+access_creativeminds_control_panel,access.creativeminds.control.panel,model_creativeminds_control_panel,base.group_user,1,1,1,1

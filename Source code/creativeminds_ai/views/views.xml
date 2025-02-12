@@ -1,36 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <!-- Definición del menú principal -->
-        <menuitem 
-            id="menu_creativeminds_ai_root" 
-            name="CreativeMinds AI"
-            web_icon="creativeminds_ai,static/description/icon.png"
-            sequence="10"/>
+   <data>
+       <!-- Form View -->
+       <record id="view_creativeminds_ai_form" model="ir.ui.view">
+            <field name="name">creativeminds.ai.form</field>
+            <field name="model">creativeminds.ai</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-        <!-- Submenú principales -->
-        <menuitem 
-            id="menu_projects" 
-            name="Proyectos"
-            parent="menu_creativeminds_ai_root"
-            sequence="10"/>
+       <!-- Tree View -->
+       <record id="view_creativeminds_ai_tree" model="ir.ui.view">
+           <field name="name">creativeminds.ai.tree</field>
+           <field name="model">creativeminds.ai</field>
+           <field name="arch" type="xml">
+               <tree>
+                   <field name="name"/>
+               </tree>
+           </field>
+       </record>
 
-        <menuitem 
+       <!-- Actions -->
+       <record id="action_creativeminds_ai" model="ir.actions.act_window">
+           <field name="name">Proyectos</field>
+           <field name="res_model">creativeminds.ai</field>
+           <field name="view_mode">tree,form</field>
+       </record>
+
+       <record id="action_creativeminds_employees" model="ir.actions.act_window">
+            <field name="name">Empleados</field>
+            <field name="res_model">creativeminds.employees</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_creativeminds_teams" model="ir.actions.act_window">
+            <field name="name">Equipos</field>
+            <field name="res_model">creativeminds.teams</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_creativeminds_control_panel" model="ir.actions.act_window">
+            <field name="name">Panel de Control</field>
+            <field name="res_model">creativeminds.control.panel</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+       <!-- Menú Principal -->
+       <menuitem 
+           id="menu_creativeminds_ai_root" 
+           name="CreativeMinds AI"
+           web_icon="creativeminds_ai,static/description/icon.png"
+           sequence="10"/>
+
+       <!-- Submenús -->
+       <menuitem 
+           id="menu_projects" 
+           name="Proyectos"
+           parent="menu_creativeminds_ai_root"
+           action="action_creativeminds_ai"
+           sequence="10"/>
+
+      <menuitem 
             id="menu_employees" 
             name="Empleados"
             parent="menu_creativeminds_ai_root"
+            action="action_creativeminds_employees"
             sequence="20"/>
 
         <menuitem 
             id="menu_teams" 
             name="Equipos"
             parent="menu_creativeminds_ai_root"
+            action="action_creativeminds_teams"
             sequence="30"/>
 
         <menuitem 
             id="menu_control_panel" 
             name="Panel de Control"
             parent="menu_creativeminds_ai_root"
+            action="action_creativeminds_control_panel"
             sequence="40"/>
-    </data>
+   </data>
 </odoo>

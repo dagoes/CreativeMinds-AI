@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'CreativeMinds AI',
     'version': '1.0',
@@ -9,12 +8,18 @@
     """,
     'author': 'Heily Madelay Ajila Tandazo',
     'category': 'Marketing',
-    'version': '17.0.1.0.0',
-    'depends': ['base'],
+    'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
+        'views/assets.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            '/creativeminds_ai/static/src/css/style.css',
+            '/creativeminds_ai/static/src/js/script.js',
+        ],
+    },
     'installable': True,
     'application': True,
     'auto_install': False,

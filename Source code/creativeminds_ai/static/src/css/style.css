@@ -1,0 +1,57 @@
+/* Clase CSS para indicar que el módulo CreativeMinds AI está activo */
+.o_active_creative_minds {
+  background-color: black !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+/* Estilos para todos los elementos de menú cuando CreativeMinds AI está activo */
+.o_active_creative_minds .o_main_navbar .o_menu_brand,
+.o_active_creative_minds .o_main_navbar .o_menu_sections,
+.o_active_creative_minds .o_main_navbar .o_menu_sections > a,
+.o_active_creative_minds .o_main_navbar .o_menu_apps,
+.o_active_creative_minds .o_main_navbar .o_nav_entry,
+.o_active_creative_minds .o_main_navbar .dropdown-toggle,
+.o_active_creative_minds .o_main_navbar .o_menu_systray > * > a,
+.o_active_creative_minds .o_main_navbar .o_menu_systray .dropdown-toggle {
+  color: white !important;
+  background-color: black !important;
+}
+
+/* Estilos para hover en elementos del menú cuando CreativeMinds AI está activo */
+.o_active_creative_minds .o_main_navbar .o_menu_sections > a:hover,
+.o_active_creative_minds .o_main_navbar .o_menu_sections > a:focus,
+.o_active_creative_minds .o_main_navbar .show .dropdown-toggle,
+.o_active_creative_minds .o_main_navbar .dropdown-toggle:hover,
+.o_active_creative_minds .o_main_navbar .o_menu_systray > * > a:hover,
+.o_active_creative_minds .o_main_navbar .o_menu_apps .dropdown-toggle:hover {
+  background-color: #333 !important;
+}
+
+/* Estilos para menús desplegables cuando CreativeMinds AI está activo */
+.o_active_creative_minds .dropdown-menu {
+  background-color: black !important;
+}
+
+.o_active_creative_minds .dropdown-menu .dropdown-item {
+  color: white !important;
+}
+
+.o_active_creative_minds .dropdown-menu .dropdown-item:hover {
+  background-color: #333 !important;
+}
+
+/* Botones primarios cuando CreativeMinds AI está activo */
+.o_active_creative_minds .btn-primary,
+.o_active_creative_minds .o_form_button_create,
+.o_active_creative_minds .o-kanban-button-new {
+  background-color: black !important;
+  border-color: #333 !important;
+  color: white !important;
+}
+
+.o_active_creative_minds .btn-primary:hover,
+.o_active_creative_minds .o_form_button_create:hover,
+.o_active_creative_minds .o-kanban-button-new:hover {
+  background-color: #333 !important;
+  border-color: #444 !important;
+}
