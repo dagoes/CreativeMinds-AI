@@ -9,6 +9,7 @@ class Proyecto(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     # Campos básicos
+    proyecto_id = fields.Integer(string='Id del Proyecto', required=True)
     nombre = fields.Char(string='Nombre del Proyecto', required=True)
     empleado_id = fields.Many2many('creativeminds.empleado', string='Empleado')
     costo_por_hora = fields.Float(string='Costo por Hora')
@@ -411,9 +412,35 @@ class Empleado(models.Model):
 
 >>>>>>> Stashed changes
     nombre = fields.Char(string='Nombre', required=True)
+    dni = fields.Char(string ='DNI',size = 9,)
+    apellido1  = fields.Char(string='Primer apellido')
+    apellido2  = fields.Char(string='Sgundo apellido')
+    fecha_nacimiento = fields.Date(string='Fecha de nacimiento')
+    fecha_incorporacion  = fields.Date(string='Fecha incorporacion',default=lambda self: fields.Datetime.now(),readonly = True,)
+    foto  = fields.Image(string='Foto',max_width=200,max_height=200,)
     proyecto_id = fields.Many2many('creativeminds.proyecto', string='Proyectos')
     departamento = fields.Char(string='Departamento')
     puesto = fields.Char(string='Puesto')
+    equipo_id = fields.Many2many('creativeminds.equipo', string='Equipos')
+    disponibilidad = fields.Selection([
+        ('disponible', 'Disponible'),
+        ('asignado', 'Asignado'),
+        ('parcial', 'Parcialmente Disponible'),
+        ('no_disponible', 'No Disponible')
+    ], string='Disponibilidad', default='disponible')
+    
+    @api.constrains('dni')
+    def _check_dni(self):
+        regex = re.compile('[0-9]{8}[A-Z]\Z',re.I)
+        for record in self:
+            if not regex.match(record.dni):
+                raise ValidationError('ERROR. Formato DNI incorrecto. ')
+
+    _sql_constraints = [
+        ('DNI_unico', 'UNIQUE(dni)', "El DNI debe ser único")
+    ]
+
+#Crear clase horas trabajadas
 
 <<<<<<< Updated upstream
 =======
@@ -450,5 +477,4 @@ class PanelDeControl(models.Model):
     _description = 'Panel de Control'
 
     nombre = fields.Char(string='Nombre', required=True)
-
     proyectos_ids = fields.Many2many('creativeminds.proyecto', string='Proyectos en el Panel')
