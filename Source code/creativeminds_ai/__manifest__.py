@@ -6,20 +6,19 @@
     'description': """
         Gestionar proyectos con AI
     """,
-    'author': 'Heily Madelay Ajila Tandazo',
+    'author': 'Heily Madelay Ajila Tandazo, Daniel Gonzalez Esteban',
     'category': 'Marketing',
-    'depends': ['base', 'web'],
+    'license': 'LGPL-3',
+    'depends': [
+        'base',
+        'hr',
+        'mail',
+        'web',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
-        'views/assets.xml',
     ],
-    'assets': {
-        'web.assets_backend': [
-            '/creativeminds_ai/static/src/css/style.css',
-            '/creativeminds_ai/static/src/js/script.js',
-        ],
-    },
     'installable': True,
     'application': True,
     'auto_install': False,
