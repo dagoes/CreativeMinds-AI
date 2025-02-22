@@ -3,14 +3,14 @@ from odoo.exceptions import ValidationError
 from datetime import date
 
 
-class CreativeMindsAI(models.Model):
-    _name = 'creativeminds.ai'
+class Proyecto(models.Model):
+    _name = 'creativeminds.proyecto'
     _description = 'Creative Minds AI'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     # Campos básicos
     nombre = fields.Char(string='Nombre del Proyecto', required=True)
-    empleado_id = fields.Many2one('creativeminds.empleado', string='Empleado')
+    empleado_id = fields.Many2many('creativeminds.empleado', string='Empleado')
     costo_por_hora = fields.Float(string='Costo por Hora')
     horas_asignadas = fields.Float(string='Horas Asignadas') 
     costo_total = fields.Float(string='Costo Total', compute='_calcular_costo_total', store=True) 
@@ -54,7 +54,7 @@ class CreativeMindsAI(models.Model):
         ('media', 'Media'),
         ('alta', 'Alta'),
     ], string='Prioridad', default='media')
-    responsable_id = fields.Many2one('res.users', string='Responsable')
+    responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
     
     # Presupuesto y recursos
     presupuesto_estimado = fields.Float(string='Presupuesto Estimado')
@@ -98,6 +98,7 @@ class CreativeMindsAI(models.Model):
     )
     
     # Campos de texto adicionales
+    colaboradores = fields.Text(string='Agencias Colaboradoras')
     riesgos = fields.Text(string='Riesgos')
     hitos = fields.Text(string='Hitos/Entregables')
     dependencias = fields.Text(string='Dependencias')
@@ -131,7 +132,7 @@ class CreativeMindsAI(models.Model):
 
     @api.model
     def create(self, valores):
-        proyecto = super(CreativeMindsAI, self).create(valores)
+        proyecto = super(Proyecto, self).create(valores)
         if proyecto.recordatorios_automaticos and proyecto.responsable_id:
             self.env['creativeminds.tarea'].create({
                 'nombre': f'Tarea inicial de proyecto: {proyecto.nombre}',
@@ -186,7 +187,7 @@ class CreativeMindsAI(models.Model):
         )
 
         actividad_tipo = self.env.ref('mail.mail_activity_data_todo')
-        modelo_id = self.env['ir.model']._get_id('creativeminds.ai')
+        modelo_id = self.env['ir.model']._get_id('creativeminds.proyecto')
 
         self.env['mail.activity'].create({
             'activity_type_id': actividad_tipo.id,
@@ -335,8 +336,8 @@ class Recurso(models.Model):
     _description = 'Recursos del Proyecto'
 
     nombre = fields.Char(string='Nombre del Recurso', required=True)
-    empleado_id = fields.Many2one('creativeminds.empleado', string='Empleado')
-    proyecto_id = fields.Many2one('creativeminds.ai', string='Proyecto')
+    empleado_id = fields.Many2many('creativeminds.empleado', string='Empleado')
+    proyecto_id = fields.Many2one('creativeminds.proyecto', string='Proyecto')
     
     # Costos y presupuesto
     costo_por_hora = fields.Float(string='Costo por Hora')
@@ -365,10 +366,10 @@ class Tarea(models.Model):
     _name = 'creativeminds.tarea'
     _description = 'Tareas del Proyecto'
 
-    proyecto_id = fields.Many2one('creativeminds.ai', string='Proyecto')
+    proyecto_id = fields.Many2one('creativeminds.proyecto', string='Proyecto')
     nombre = fields.Char(string='Nombre de la Tarea', required=True)
     descripcion = fields.Text(string='Descripción')
-    responsable_id = fields.Many2one('res.users', string='Responsable')
+    responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
     fecha_comienzo = fields.Date(string='Fecha de Inicio')
     fecha_final = fields.Date(string='Fecha de Finalización')
     estado = fields.Selection([
@@ -378,11 +379,12 @@ class Tarea(models.Model):
     ], string='Estado', default='pendiente')
 
 
+#Indicadores de Desempeño
 class KPI(models.Model):
     _name = 'creativeminds.kpi'
     _description = 'Indicadores Clave de Rendimiento'
 
-    proyecto_id = fields.Many2one('creativeminds.ai', string='Proyecto')
+    proyecto_id = fields.Many2one('creativeminds.proyecto', string='Proyecto')
     nombre = fields.Char(string='Nombre del KPI', required=True)
     valor = fields.Float(string='Valor')
     objetivo = fields.Float(string='Objetivo')
@@ -390,20 +392,27 @@ class KPI(models.Model):
 class Empleado(models.Model):
     _name = 'creativeminds.empleado'
     _description = 'Empleados del Proyecto'
+    _inherit = ['mail.thread']
 
-
+    empleado_id = fields.Integer(string='ID',required=True)
     nombre = fields.Char(string='Nombre', required=True)
-    proyecto_id = fields.Many2many('creativeminds.ai', string='Proyectos')
+    proyecto_id = fields.Many2many('creativeminds.proyecto', string='Proyectos')
     departamento = fields.Char(string='Departamento')
     puesto = fields.Char(string='Puesto')
-
 
 class Equipo(models.Model):
     _name = 'creativeminds.equipo'
     _description = 'Equipos de Trabajo'
 
     nombre = fields.Char(string='Nombre', required=True)
+    empleado_id = fields.Many2many('creativeminds.empleado', string='Empleado')
+    responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
+    descripcion = fields.Text(string='Descripcion del equipo')
+    n_mienbros = fields.Integer(string='Número de Miembros', compute='_compute_n_mienbros')
 
+    def _compute_n_mienbros(self):
+        for equipo in self:
+            equipo.n_mienbros = len(equipo.empleado_id)
 
 class PanelDeControl(models.Model):
     _name = 'creativeminds.control.panel'
@@ -411,4 +420,4 @@ class PanelDeControl(models.Model):
 
     nombre = fields.Char(string='Nombre', required=True)
 
-    proyectos_ids = fields.Many2many('creativeminds.ai', string='Proyectos en el Panel')
+    proyectos_ids = fields.Many2many('creativeminds.proyecto', string='Proyectos en el Panel')

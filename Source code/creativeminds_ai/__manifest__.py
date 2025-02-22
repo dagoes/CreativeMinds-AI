@@ -6,7 +6,7 @@
     'description': """
         Gestionar proyectos con AI
     """,
-    'author': 'Heily Madelay Ajila Tandazo',
+    'author': 'Heily Madelay Ajila Tandazo, Daniel Gonzalez Esteban',
     'category': 'Marketing',
     'license': 'LGPL-3',
     'depends': [

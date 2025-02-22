@@ -111,6 +111,7 @@
         <field name="model">creativeminds.empleado</field>
         <field name="arch" type="xml">
             <tree string="Empleados">
+                <field name="empleado_id"/>
                 <field name="nombre" />
                 <field name="proyecto_id" />
                 <field name="departamento" />
@@ -125,6 +126,10 @@
         <field name="arch" type="xml">
             <tree string="Equipos">
                 <field name="nombre" />
+                <field name="empleado_id"/>
+                <field name="responsable_id" />
+                <field name="descripcion" />
+                <field name="n_mienbros" />
             </tree>
         </field>
     </record>
