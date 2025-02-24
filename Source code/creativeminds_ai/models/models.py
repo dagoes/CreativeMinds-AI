@@ -55,7 +55,11 @@ class Proyecto(models.Model):
         ('media', 'Media'),
         ('alta', 'Alta'),
     ], string='Prioridad', default='media')
+<<<<<<< Updated upstream
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
+=======
+    responsable_id = fields.Many2one('res.users', string='Responsable')
+>>>>>>> Stashed changes
     
     # Presupuesto y recursos
     presupuesto_estimado = fields.Float(string='Presupuesto Estimado')
@@ -99,7 +103,10 @@ class Proyecto(models.Model):
     )
     
     # Campos de texto adicionales
+<<<<<<< Updated upstream
     colaboradores = fields.Text(string='Agencias Colaboradoras')
+=======
+>>>>>>> Stashed changes
     riesgos = fields.Text(string='Riesgos')
     hitos = fields.Text(string='Hitos/Entregables')
     dependencias = fields.Text(string='Dependencias')
@@ -370,7 +377,11 @@ class Tarea(models.Model):
     proyecto_id = fields.Many2one('creativeminds.proyecto', string='Proyecto')
     nombre = fields.Char(string='Nombre de la Tarea', required=True)
     descripcion = fields.Text(string='Descripción')
+<<<<<<< Updated upstream
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
+=======
+    responsable_id = fields.Many2one('res.users', string='Responsable')
+>>>>>>> Stashed changes
     fecha_comienzo = fields.Date(string='Fecha de Inicio')
     fecha_final = fields.Date(string='Fecha de Finalización')
     estado = fields.Selection([
@@ -395,7 +406,11 @@ class Empleado(models.Model):
     _description = 'Empleados del Proyecto'
     _inherit = ['mail.thread']
 
+<<<<<<< Updated upstream
     empleado_id = fields.Integer(string='ID',required=True)
+=======
+
+>>>>>>> Stashed changes
     nombre = fields.Char(string='Nombre', required=True)
     dni = fields.Char(string ='DNI',size = 9,)
     apellido1  = fields.Char(string='Primer apellido')
@@ -427,11 +442,21 @@ class Empleado(models.Model):
 
 #Crear clase horas trabajadas
 
+<<<<<<< Updated upstream
+=======
+    #ID DE EMPLEADO
+
+    
+      
+
+
+>>>>>>> Stashed changes
 class Equipo(models.Model):
     _name = 'creativeminds.equipo'
     _description = 'Equipos de Trabajo'
 
     nombre = fields.Char(string='Nombre', required=True)
+<<<<<<< Updated upstream
     empleado_id = fields.Many2many('creativeminds.empleado', string='Empleado')
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
     descripcion = fields.Text(string='Descripcion del equipo')
@@ -440,6 +465,12 @@ class Equipo(models.Model):
     def _compute_n_mienbros(self):
         for equipo in self:
             equipo.n_mienbros = len(equipo.empleado_id)
+=======
+
+
+
+
+>>>>>>> Stashed changes
 
 class PanelDeControl(models.Model):
     _name = 'creativeminds.control.panel'
