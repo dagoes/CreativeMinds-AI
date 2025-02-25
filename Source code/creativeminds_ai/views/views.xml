@@ -104,15 +104,18 @@
                             <p><small>Costo Total de Recursos: <field name="costo_total_recursos" /></small></p>
                             <div class="o_kanban_footer">
                                 <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" />
-                                <div t-if="record.estado.raw_value == 'en_progreso'">
-                                    <button name="detener_proyecto" string="Detener Proyecto" type="object" class="btn-danger" />
-                                </div>
-                                <div t-if="record.estado.raw_value == 'detenido'">
-                                    <button name="reactivar_proyecto" string="Reactivar Proyecto" type="object" class="btn-success" />
-                                </div>
-                                <div t-if="record.estado.raw_value == 'en_progreso'">
-                                    <button name="finalizar_proyecto" string="Finalizar Proyecto" type="object" class="btn-warning" />
-                                </div>
+                                <button name="detener_proyecto" string="Detener Proyecto" type="object" class="btn-danger"
+                                    invisible="1" 
+                                    groups="base.group_user"
+                                    condition="record.estado == 'en_progreso'"/>
+                                <button name="reactivar_proyecto" string="Reactivar Proyecto" type="object" class="btn-success"
+                                    invisible="1" 
+                                    groups="base.group_user"
+                                    condition="record.estado == 'detenido'"/>
+                                <button name="finalizar_proyecto" string="Finalizar Proyecto" type="object" class="btn-warning"
+                                    invisible="1"
+                                    groups="base.group_user"
+                                    condition="record.estado == 'en_progreso'"/>
                                 <button string="Obtener Resumen" type="object" class="btn-info" name="obtener_resumen_proyecto" />
                                 <button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" />
                                 <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" />
@@ -145,8 +148,8 @@
     </record>
 
     <record model="ir.ui.view" id="view_creativeminds_employee_form">
-          <field name="name">Lista de tecnicos</field>
-          <field name="model">soporte.tecnico</field>
+          <field name="name">Nuevo empleado</field>
+          <field name="model">creativeminds.empleado</field>
           <field name="arch" type="xml">
             <form >
                 <sheet string ="Modelo para la gestión de empleadoss">
@@ -213,12 +216,11 @@
         <field name="model">creativeminds.equipo</field>
         <field name="arch" type="xml">
             <tree string="Equipos">
-                <field name="equipo_id" />
                 <field name="nombre" />
                 <field name="empleado_id"/>
                 <field name="responsable_id" />
                 <field name="descripcion" />
-                <field name="n_mienbros" />
+                <field name="n_miembros" />
             </tree>
         </field>
     </record>
@@ -294,10 +296,9 @@
     </record>
 
     <record id="action_creativeminds_task" model="ir.actions.act_window">
-        <field name="name">Tareas del Proyecto</field>
+        <field name="name">Tareas de Proyecto</field>
         <field name="res_model">creativeminds.tarea</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('proyecto_id', '=', active_id)]</field>
     </record>
 
     <record id="action_creativeminds_resource" model="ir.actions.act_window">
@@ -307,11 +308,10 @@
         <field name="domain">[('proyecto_id', '=', active_id)]</field>
     </record>
 
-    <record id="action_creativeminds_employee_project" model="ir.actions.act_window">
+    <record id="action_creativeminds_employee" model="ir.actions.act_window">
         <field name="name">Empleados del Proyecto</field>
         <field name="res_model">creativeminds.empleado</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('id', 'in', parent.proyecto_id)]</field>
     </record>
 
     <record id="action_creativeminds_team_project" model="ir.actions.act_window">
@@ -346,7 +346,7 @@
         id="menu_project_members" 
         name="Ver Miembros"
         parent="menu_projects"
-        action="action_creativeminds_employee_project"
+        action="action_creativeminds_employee"
         sequence="20"/>
 
     <menuitem 

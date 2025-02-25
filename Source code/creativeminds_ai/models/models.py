@@ -398,15 +398,16 @@ class Equipo(models.Model):
     _name = 'creativeminds.equipo'
     _description = 'Equipos de Trabajo'
 
+    equipo_id = fields.Integer(string='ID Grupo', required=True)
     nombre = fields.Char(string='Nombre', required=True)
     empleado_id = fields.Many2many('creativeminds.empleado', string='Empleado')
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
     descripcion = fields.Text(string='Descripcion del equipo')
-    n_mienbros = fields.Integer(string='Número de Miembros', compute='_compute_n_mienbros')
+    n_miembros = fields.Integer(string='Número de Miembros', compute='_compute_n_miembros')
 
-    def _compute_n_mienbros(self):
+    def _compute_n_miembros(self):
         for equipo in self:
-            equipo.n_mienbros = len(equipo.empleado_id)
+            equipo.n_miembros = len(equipo.empleado_id)
 
 class PanelDeControl(models.Model):
     _name = 'creativeminds.control.panel'
