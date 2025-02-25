@@ -1,10 +1,10 @@
 {
-    'name': 'CreativeMinds AI',
+    'name': 'CreativeMinds',
     'version': '1.0',
     'icon': '/creativeminds_ai/static/description/icon.png',
     'summary': 'Modulo para la gestion de proyectos',
     'description': """
-        Gestionar proyectos con AI
+        Gestion de proyectos
     """,
     'author': 'Heily Madelay Ajila Tandazo, Daniel Gonzalez Esteban',
     'category': 'Marketing',
