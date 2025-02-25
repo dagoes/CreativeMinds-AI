@@ -5,7 +5,7 @@ from datetime import date
 
 class Proyecto(models.Model):
     _name = 'creativeminds.proyecto'
-    _description = 'Creative Minds AI'
+    _description = 'Proyecto'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     # Campos básicos
@@ -20,15 +20,13 @@ class Proyecto(models.Model):
     
     @api.depends('costo_por_hora', 'horas_asignadas')
     def _calcular_costo_total(self):
-        for registro in self:
-            registro.costo_total = registro.costo_por_hora * registro.horas_asignadas
+        self.costo_total = self.costo_por_hora * self.horas_asignadas
 
 
     @api.constrains('costo_por_hora', 'horas_asignadas')
     def _verificar_costo_y_horas(self):
-        for registro in self:
-            if registro.costo_por_hora < 0 or registro.horas_asignadas < 0:
-                raise ValidationError("El costo por hora y las horas asignadas deben ser valores positivos.")
+        if self.costo_por_hora < 0 or self.horas_asignadas < 0:
+            raise ValidationError("El costo por hora y las horas asignadas deben ser valores positivos.")
    
     # Estados y seguimiento
     estado = fields.Selection([
@@ -55,11 +53,7 @@ class Proyecto(models.Model):
         ('media', 'Media'),
         ('alta', 'Alta'),
     ], string='Prioridad', default='media')
-<<<<<<< Updated upstream
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
-=======
-    responsable_id = fields.Many2one('res.users', string='Responsable')
->>>>>>> Stashed changes
     
     # Presupuesto y recursos
     presupuesto_estimado = fields.Float(string='Presupuesto Estimado')
@@ -70,17 +64,15 @@ class Proyecto(models.Model):
 
     @api.depends('recursos_ids.costo_total')
     def _calcular_costo_total_recursos(self):
-        for registro in self:
-            registro.costo_total_recursos = sum(registro.recursos_ids.mapped('costo_total'))
+        self.costo_total_recursos = sum(self.recursos_ids.mapped('costo_total'))
 
     @api.constrains('presupuesto_estimado', 'costo_total_recursos')
     def _verificar_presupuesto(self):
-        for registro in self:
-            if registro.costo_total_recursos > registro.presupuesto_estimado:
-                raise ValidationError(
-                    f"El costo total de recursos ({registro.costo_total_recursos}) "
-                    f"excede el presupuesto estimado ({registro.presupuesto_estimado})"
-                )
+        if self.costo_total_recursos > self.presupuesto_estimado:
+            raise ValidationError(
+                f"El costo total de recursos ({self.costo_total_recursos}) "
+                f"excede el presupuesto estimado ({self.presupuesto_estimado})"
+            )
 
 
     # Relaciones
@@ -103,10 +95,7 @@ class Proyecto(models.Model):
     )
     
     # Campos de texto adicionales
-<<<<<<< Updated upstream
     colaboradores = fields.Text(string='Agencias Colaboradoras')
-=======
->>>>>>> Stashed changes
     riesgos = fields.Text(string='Riesgos')
     hitos = fields.Text(string='Hitos/Entregables')
     dependencias = fields.Text(string='Dependencias')
@@ -117,25 +106,21 @@ class Proyecto(models.Model):
 
     @api.constrains('fecha_inicio', 'fecha_fin')
     def _verificar_fechas_proyecto(self):
-        for registro in self:
-            if registro.fecha_inicio and registro.fecha_fin and registro.fecha_inicio > registro.fecha_fin:
-                raise ValidationError("La fecha de inicio no puede ser posterior a la fecha de finalización.")
+        if self.fecha_inicio and self.fecha_fin and self.fecha_inicio > self.fecha_fin:
+            raise ValidationError("La fecha de inicio no puede ser posterior a la fecha de finalización.")
 
     @api.constrains('presupuesto_estimado')
     def _verificar_presupuesto_estimado(self):
-        for registro in self:
-            if registro.presupuesto_estimado <= 0:
-                raise ValidationError("El presupuesto estimado debe ser mayor que cero.")
-
-            num_recursos = len(registro.recursos_ids)
-            num_tareas = len(registro.tareas_ids)
-            presupuesto_requerido = (num_recursos * 500) + (num_tareas * 200)
-
-            if (num_recursos > 0 or num_tareas > 0) and registro.presupuesto_estimado < presupuesto_requerido:
-                raise ValidationError(
-                    f"El presupuesto ({registro.presupuesto_estimado}) es insuficiente. "
-                    f"Se requieren al menos {round(presupuesto_requerido, 2)} para cubrir recursos y tareas."
-                )
+        if self.presupuesto_estimado <= 0:
+            raise ValidationError("El presupuesto estimado debe ser mayor que cero.")
+        num_recursos = len(self.recursos_ids)
+        num_tareas = len(self.tareas_ids)
+        presupuesto_requerido = (num_recursos * 500) + (num_tareas * 200)
+        if (num_recursos > 0 or num_tareas > 0) and self.presupuesto_estimado < presupuesto_requerido:
+            raise ValidationError(
+                f"El presupuesto ({self.presupuesto_estimado}) es insuficiente. "
+                f"Se requieren al menos {round(presupuesto_requerido, 2)} para cubrir recursos y tareas."
+            )
 
 
     @api.model
@@ -157,7 +142,6 @@ class Proyecto(models.Model):
             ('proyecto_id', '=', self.id),
             ('nombre', '=', 'Progreso del Proyecto')
         ], limit=1)
-
         if indicador:
             indicador.write({'valor': self.porcentaje_progreso})
         return True
@@ -165,12 +149,10 @@ class Proyecto(models.Model):
     def enviar_notificacion_proyecto(self, tipo_notificacion='estado'):
         if not self.responsable_id:
             return
-
         asunto = f"Cambio de Estado: Proyecto {self.nombre}" if tipo_notificacion == 'estado' else f"Actualización de Progreso: Proyecto {self.nombre}"
         mensaje = f"<p>Hola {self.responsable_id.name},</p>"
         mensaje += f"<p>El estado del proyecto <b>{self.nombre}</b> ha cambiado a <b>{dict(self._fields['estado'].selection).get(self.estado)}</b>.</p>"
         mensaje += f"<p>Progreso actual: {round(self.porcentaje_progreso, 2)}%</p>"
-
         self.message_post(
             body=mensaje,
             subject=asunto,
@@ -180,23 +162,19 @@ class Proyecto(models.Model):
     def enviar_recordatorio(self, proyecto):
         if not proyecto.responsable_id:
             return
-
         mensaje = f"""
             <p>Estimado {proyecto.responsable_id.name},</p>
             <p>Este es un recordatorio de que el proyecto <b>{proyecto.nombre}</b> tiene tareas pendientes.</p>
             <p>Por favor, asegúrese de revisar el progreso y continuar con las tareas.</p>
             <p>Saludos,<br>Equipo de gestión de proyectos</p>
         """
-
         proyecto.message_post(
             body=mensaje,
             subject=f"Recordatorio: Proyecto {proyecto.nombre} - Tareas pendientes",
             partner_ids=[proyecto.responsable_id.partner_id.id]
         )
-
         actividad_tipo = self.env.ref('mail.mail_activity_data_todo')
         modelo_id = self.env['ir.model']._get_id('creativeminds.proyecto')
-
         self.env['mail.activity'].create({
             'activity_type_id': actividad_tipo.id,
             'res_model_id': modelo_id,
@@ -208,28 +186,22 @@ class Proyecto(models.Model):
 
     @api.depends('tareas_ids.estado')
     def _calcular_progreso(self):
-        for registro in self:
-            total_tareas = len(registro.tareas_ids)
-            tareas_completadas = len(registro.tareas_ids.filtered(lambda t: t.estado == 'completada'))
-
-            registro.porcentaje_progreso = (tareas_completadas / total_tareas * 100) if total_tareas > 0 else 0.0
+        total_tareas = len(self.tareas_ids)
+        tareas_completadas = len(self.tareas_ids.filtered(lambda t: t.estado == 'completada'))
+        self.porcentaje_progreso = (tareas_completadas / total_tareas * 100) if total_tareas > 0 else 0.0
  
     def detener_proyecto(self):
-        for registro in self:
-            if registro.estado in ['finalizado', 'detenido']:
-                raise ValidationError("El proyecto ya está finalizado o detenido.")
-            
-            registro.estado = 'detenido'
-            # Notificar al responsable
-            self.enviar_notificacion_proyecto(tipo_notificacion='estado')
+        if self.estado in ['finalizado', 'detenido']:
+            raise ValidationError("El proyecto ya está finalizado o detenido.")
+        self.write({'estado': 'detenido'})
+        # Notificar al responsable
+        self.enviar_notificacion_proyecto(tipo_notificacion='estado')
 
     def reactivar_proyecto(self):
-        for registro in self:
-            if registro.estado != 'detenido':
-                raise ValidationError("Solo se pueden reactivar proyectos detenidos.")
-            
-            registro.estado = 'en_progreso'
-            self.enviar_notificacion_proyecto(tipo_notificacion='estado')
+        if self.estado != 'detenido':
+            raise ValidationError("Solo se pueden reactivar proyectos detenidos.")
+        self.write({'estado': 'en_progreso'})
+        self.enviar_notificacion_proyecto(tipo_notificacion='estado')
 
     def finalizar_proyecto(self):
         self.write({
@@ -260,60 +232,48 @@ class Proyecto(models.Model):
         proyecto = self.browse(proyecto_id)
         if not proyecto.exists():
             raise ValidationError("El proyecto especificado no existe.")
-
-        nuevo_proyecto = proyecto.copy()
-        
+        nuevo_proyecto = proyecto.copy() 
         for tarea in proyecto.tareas_ids:
             tarea.copy({'proyecto_id': nuevo_proyecto.id})
-
         return nuevo_proyecto
 
 
     @api.constrains('descripcion', 'cliente', 'responsable_id')
     def _verificar_campos_importantes(self):
-        for registro in self:
-            if registro.descripcion and len(registro.descripcion.strip()) < 10:
-                raise ValidationError("La descripción del proyecto debe tener al menos 10 caracteres.")
-                
-            if registro.estado in ['en_progreso', 'finalizado'] and not registro.cliente:
-                raise ValidationError("Debe especificar un cliente antes de cambiar el proyecto a 'En progreso' o 'Finalizado'.")
-                
-            if registro.estado != 'planificacion' and not registro.responsable_id:
-                raise ValidationError("Debe asignar un responsable antes de avanzar con el proyecto.")
+        if self.descripcion and len(self.descripcion.strip()) < 10:
+            raise ValidationError("La descripción del proyecto debe tener al menos 10 caracteres.")
+        if self.estado in ['en_progreso', 'finalizado'] and not self.cliente:
+            raise ValidationError("Debe especificar un cliente antes de cambiar el proyecto a 'En progreso' o 'Finalizado'.")
+        if self.estado != 'planificacion' and not self.responsable_id:
+            raise ValidationError("Debe asignar un responsable antes de avanzar con el proyecto.")
 
     @api.constrains('riesgos', 'hitos')
     def _verificar_campos_planificacion(self):
-        for registro in self:
-            if registro.prioridad == 'alta':
-                if not registro.riesgos:
-                    raise ValidationError("Para proyectos de alta prioridad, es obligatorio definir los riesgos.")
-                if not registro.hitos:
-                    raise ValidationError("Para proyectos de alta prioridad, es obligatorio definir los hitos/entregables.")
+        if self.prioridad == 'alta':
+            if not self.riesgos:
+                raise ValidationError("Para proyectos de alta prioridad, es obligatorio definir los riesgos.")
+            if not self.hitos:
+                raise ValidationError("Para proyectos de alta prioridad, es obligatorio definir los hitos/entregables.")
 
     @api.constrains('recursos_ids')
     def _verificar_recursos_minimos(self):
-        for registro in self:
-            if registro.estado != 'planificacion' and not registro.recursos_ids:
-                raise ValidationError("Debe asignar al menos un recurso antes de iniciar el proyecto.")
+        if self.estado != 'planificacion' and not self.recursos_ids:
+            raise ValidationError("Debe asignar al menos un recurso antes de iniciar el proyecto.")
 
     @api.constrains('fecha_inicio', 'fecha_fin', 'estado', 'tareas_ids')
     def _verificar_fechas_y_tareas(self):
-        for registro in self:
-            if registro.estado == 'en_progreso':
-                if not registro.fecha_inicio:
-                    raise ValidationError("Debe establecer una fecha de inicio antes de comenzar el proyecto.")
-                if not registro.fecha_fin:
-                    raise ValidationError("Debe establecer una fecha de finalización antes de comenzar el proyecto.")
-                
-                if not registro.tareas_ids:
-                    raise ValidationError("Debe crear al menos una tarea antes de iniciar el proyecto.")
-                
-                for tarea in registro.tareas_ids:
-                    if tarea.fecha_inicio and tarea.fecha_inicio < registro.fecha_inicio:
-                        raise ValidationError(f"La tarea '{tarea.nombre}' tiene una fecha de inicio anterior a la fecha de inicio del proyecto.")
-                    if tarea.fecha_fin and tarea.fecha_fin > registro.fecha_fin:
-              
-                        raise ValidationError(f"La tarea '{tarea.nombre}' tiene una fecha de finalización posterior a la fecha de fin del proyecto.")
+        if self.estado == 'en_progreso':
+            if not self.fecha_inicio:
+                raise ValidationError("Debe establecer una fecha de inicio antes de comenzar el proyecto.")
+            if not self.fecha_fin:
+                raise ValidationError("Debe establecer una fecha de finalización antes de comenzar el proyecto.")
+            if not self.tareas_ids:
+                raise ValidationError("Debe crear al menos una tarea antes de iniciar el proyecto.")
+            for tarea in self.tareas_ids:
+                if tarea.fecha_inicio and tarea.fecha_inicio < self.fecha_inicio:
+                    raise ValidationError(f"La tarea '{tarea.nombre}' tiene una fecha de inicio anterior a la fecha de inicio del proyecto.")
+                if tarea.fecha_fin and tarea.fecha_fin > self.fecha_fin:
+                    raise ValidationError(f"La tarea '{tarea.nombre}' tiene una fecha de finalización posterior a la fecha de fin del proyecto.")
 
 
      # Para ver tareas del proyecto
@@ -377,11 +337,7 @@ class Tarea(models.Model):
     proyecto_id = fields.Many2one('creativeminds.proyecto', string='Proyecto')
     nombre = fields.Char(string='Nombre de la Tarea', required=True)
     descripcion = fields.Text(string='Descripción')
-<<<<<<< Updated upstream
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
-=======
-    responsable_id = fields.Many2one('res.users', string='Responsable')
->>>>>>> Stashed changes
     fecha_comienzo = fields.Date(string='Fecha de Inicio')
     fecha_final = fields.Date(string='Fecha de Finalización')
     estado = fields.Selection([
@@ -406,11 +362,7 @@ class Empleado(models.Model):
     _description = 'Empleados del Proyecto'
     _inherit = ['mail.thread']
 
-<<<<<<< Updated upstream
     empleado_id = fields.Integer(string='ID',required=True)
-=======
-
->>>>>>> Stashed changes
     nombre = fields.Char(string='Nombre', required=True)
     dni = fields.Char(string ='DNI',size = 9,)
     apellido1  = fields.Char(string='Primer apellido')
@@ -442,35 +394,20 @@ class Empleado(models.Model):
 
 #Crear clase horas trabajadas
 
-<<<<<<< Updated upstream
-=======
-    #ID DE EMPLEADO
-
-    
-      
-
-
->>>>>>> Stashed changes
 class Equipo(models.Model):
     _name = 'creativeminds.equipo'
     _description = 'Equipos de Trabajo'
 
+    equipo_id = fields.Integer(string='ID Grupo', required=True)
     nombre = fields.Char(string='Nombre', required=True)
-<<<<<<< Updated upstream
     empleado_id = fields.Many2many('creativeminds.empleado', string='Empleado')
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
     descripcion = fields.Text(string='Descripcion del equipo')
-    n_mienbros = fields.Integer(string='Número de Miembros', compute='_compute_n_mienbros')
+    n_miembros = fields.Integer(string='Número de Miembros', compute='_compute_n_miembros')
 
-    def _compute_n_mienbros(self):
+    def _compute_n_miembros(self):
         for equipo in self:
-            equipo.n_mienbros = len(equipo.empleado_id)
-=======
-
-
-
-
->>>>>>> Stashed changes
+            equipo.n_miembros = len(equipo.empleado_id)
 
 class PanelDeControl(models.Model):
     _name = 'creativeminds.control.panel'
