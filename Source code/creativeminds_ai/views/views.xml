@@ -201,6 +201,10 @@
                         <field name="prioridad" />
                         <field name="responsable_id" />
                         <field name="estado" />
+                        <field name="horas_trabajadas_ids" widget="many2many_list">
+                            <tree>
+                                <field name="horas"/>
+                            </tree
                     </tree>
                   </field>
                 </sheet>
@@ -299,6 +303,13 @@
         <field name="name">Tareas de Proyecto</field>
         <field name="res_model">creativeminds.tarea</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('proyecto_id', '=', active_id)]</field>
+    </record>
+
+    <record id="action_creativeminds_task2" model="ir.actions.act_window">
+        <field name="name">Tareas de Proyecto</field>
+        <field name="res_model">creativeminds.tarea</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
     <record id="action_creativeminds_resource" model="ir.actions.act_window">
@@ -312,6 +323,7 @@
         <field name="name">Empleados del Proyecto</field>
         <field name="res_model">creativeminds.empleado</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('id', 'in', parent.proyecto_id)]</field>
     </record>
 
     <record id="action_creativeminds_team_project" model="ir.actions.act_window">
@@ -339,15 +351,8 @@
         id="menu_project_tasks" 
         name="Ver Tareas"
         parent="menu_projects"
-        action="action_creativeminds_task"
+        action="action_creativeminds_task2"
         sequence="15"/>
-
-    <menuitem 
-        id="menu_project_members" 
-        name="Ver Miembros"
-        parent="menu_projects"
-        action="action_creativeminds_employee"
-        sequence="20"/>
 
     <menuitem 
         id="menu_employees" 

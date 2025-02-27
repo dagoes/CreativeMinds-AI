@@ -17,7 +17,12 @@ class Proyecto(models.Model):
     costo_total = fields.Float(string='Costo Total', compute='_calcular_costo_total', store=True) 
     descripcion = fields.Text(string='Descripción del Proyecto')
     cliente = fields.Char(string='Cliente')
-    
+    horas_trabajadas_ids = fields.One2many(
+        'creativeminds.horas_trabajadas',
+        'proyecto_id',
+        String="Horas Trabajadas"
+    )
+
     @api.depends('costo_por_hora', 'horas_asignadas')
     def _calcular_costo_total(self):
         self.costo_total = self.costo_por_hora * self.horas_asignadas
@@ -380,6 +385,11 @@ class Empleado(models.Model):
         ('parcial', 'Parcialmente Disponible'),
         ('no_disponible', 'No Disponible')
     ], string='Disponibilidad', default='disponible')
+    horas_trabajadas_ids = fields.One2many(
+        'creativeminds.horas_trabajadas',
+        'empleado_id',
+        string="Horas Trabajadas"
+    )
     
     @api.constrains('dni')
     def _check_dni(self):
@@ -392,7 +402,25 @@ class Empleado(models.Model):
         ('DNI_unico', 'UNIQUE(dni)', "El DNI debe ser único")
     ]
 
-#Crear clase horas trabajadas
+class HorasTrabajadas(models.Model):
+    _name = 'creativeminds.horas_trabajadas'
+    _description = 'Horas Trabajadas'
+
+    horas = fields.Float("Horas Trabajadas")
+    empleado_id = fields.Many2one('creativeminds.empleado', string="Empleado")
+    proyecto_id = fields.Many2one('creativeminds.proyecto', string="Proyecto")
+    fecha = fields.Date("Fecha de Registro")
+    
+    @api.model
+    def create(self, values):
+        if values.get('empleado_id') and values.get('proyecto_id'):
+            existing_record = self.search([
+                ('empleado_id', '=', values['empleado_id']),
+                ('proyecto_id', '=', values['proyecto_id']),
+            ], limit=1)
+            if existing_record:
+                raise ValidationError("Ya existe un registro de horas trabajadas para este proyecto y empleado.")
+        return super(HorasTrabajadas, self).create(values)
 
 class Equipo(models.Model):
     _name = 'creativeminds.equipo'
