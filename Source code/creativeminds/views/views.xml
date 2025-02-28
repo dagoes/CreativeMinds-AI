@@ -8,6 +8,7 @@
             <form string="Proyecto">
                 <sheet>
                     <group>
+                        <field name="estado" widget="statusbar" statusbar_visible="planificacion,en_progreso,finalizado,detenido" statusbar_colors='{"detenido": "red", "finalizado": "green"}' />
                         <field name="proyecto_id" />
                         <field name="nombre" />
                         <field name="empleado_id" />
@@ -18,7 +19,6 @@
                         <field name="cliente" />
                     </group>
                     <group>
-                        <field name="estado" widget="statusbar" statusbar_visible="planificacion,en_progreso,finalizado,detenido" statusbar_colors='{"detenido": "red", "finalizado": "green"}' />
                         <field name="porcentaje_progreso" />
                         <field name="fecha_inicio" />
                         <field name="fecha_fin" />
@@ -36,6 +36,10 @@
                     </group>
                     <footer>
                         <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" />
+                        <button name="activar_proyecto" string="Activar Proyecto" type="object" class="btn-success"
+                            invisible="1" 
+                            groups="base.group_user"
+                            condition="record.estado == 'planificacion'"/>
                         <button name="detener_proyecto" string="Detener Proyecto" type="object" class="btn-danger"
                             invisible="1" 
                             groups="base.group_user"
@@ -153,59 +157,62 @@
           <field name="arch" type="xml">
             <form >
                 <sheet string ="Modelo para la gestión de empleadoss">
-                  <div class = "oe_title">
-                    <h1>Empleado_<field name="empleado_id"/></h1>
-                  </div>
-                  <div class = "row">
-                    <div class = "oe_title mt-4">
-                      <h1>
-                        <field name = "dni" placeholder="12345678Z" class="oe_inline"/>                 
-                      </h1>
+                    <div class = "oe_title">
+                        <h1>Empleado_<field name="empleado_id"/></h1>
                     </div>
-                    <div class ="mt-4">
-                      <field name="foto" widget="image" class="oe_right" options="{'size':[0,200]}"/>
+                    <div class = "row">
+                        <div class = "oe_title mt-4">
+                        <h1>
+                            <field name = "dni" placeholder="12345678Z" class="oe_inline"/>                 
+                        </h1>
+                        </div>
+                        <div class ="mt-4">
+                        <field name="foto" widget="image" class="oe_right" options="{'size':[0,200]}"/>
+                        </div>
                     </div>
-                  </div>
-                  <separator string="Datos personales" colspan="4"/>
+                    <separator string="Datos personales" colspan="4"/>
                     <group col="3">
-                      <group >
-                        <field name="apellido1"/>
-                        <field name="fecha_nacimiento"/>
-                        <field name="fecha_incorporacion"/>
-                      </group>
-                      <group >
-                        <field name="apellido2"/>
-                        <field name="departamento" />
-                        <field name="puesto" />
-                      </group>
-                      <group >
-                        <field name="nombre" />
-                        <field name="disponibilidad" />
-                      </group>
+                        <group >
+                            <field name="apellido1"/>
+                            <field name="fecha_nacimiento"/>
+                            <field name="fecha_incorporacion"/>
+                        </group>
+                        <group >
+                            <field name="apellido2"/>
+                            <field name="departamento" />
+                            <field name="puesto" />
+                        </group>
+                        <group >
+                            <field name="nombre" />
+                            <field name="disponibilidad" />
+                        </group>
                     </group>
-                  <separator string="Equipos" colspan="4"/>
-                  <field name="equipo_id" widget="many2many_tags" can_create="False" can_write="False">
+                    <separator string="Equipos" colspan="4"/>
+                    <field name="equipo_id" widget="many2many_tags" can_create="False" can_write="False">
                     <tree>
                         <field name="nombre" />
                         <field name="responsable_id" />
                         <field name="descripcion" />
                     </tree>
-                  </field>
-                  <separator string="Proyectos" colspan="4"/>
-                  <field name="proyecto_id" widget="many2many_tags" can_create="False" can_write="False">
-                    <tree>
-                        <field name="nombre" />
-                        <field name="porcentaje_progreso" />
-                        <field name="fecha_inicio" />
-                        <field name="fecha_fin" />
-                        <field name="prioridad" />
-                        <field name="responsable_id" />
-                        <field name="estado" />
-                        <field name="horas_trabajadas_ids" widget="many2many_list">
+                    </field>
+                    <separator string="Proyectos" colspan="4"/>
+                    <field name="proyecto_id" widget="many2many_tags" can_create="False" can_write="False">
+                        <tree>
+                            <field name="nombre" />
+                            <field name="porcentaje_progreso" />
+                            <field name="fecha_inicio" />
+                            <field name="fecha_fin" />
+                            <field name="prioridad" />
+                            <field name="responsable_id" />
+                            <field name="estado" />
+                        </tree>
+                    </field>
+                    <field name="horas_trabajadas_ids" widget="Many2one">
                             <tree>
                                 <field name="horas"/>
-                            </tree
-                    </tree>
+                                <field name="proyecto_id"/>
+                            </tree>
+                    </field>
                   </field>
                 </sheet>
                 <div class="oe_chatter">

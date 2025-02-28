@@ -1,7 +1,7 @@
 {
     'name': 'CreativeMinds',
     'version': '1.0',
-    'icon': '/creativeminds_ai/static/description/icon.png',
+    'icon': '/creativeminds/static/description/icon.png',
     'summary': 'Modulo para la gestion de proyectos',
     'description': """
         Gestion de proyectos
@@ -12,6 +12,7 @@
     'depends': [
         'base',
         'hr',
+        'project',
         'mail',
         'web',
     ],

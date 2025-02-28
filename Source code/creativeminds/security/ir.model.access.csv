@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
-access_creativeminds_ai_user,access.creativeminds.proyecto.user,model_creativeminds_proyecto,base.group_user,1,1,1,0
-access_creativeminds_ai_manager,access.creativeminds.proyecto.manager,model_creativeminds_proyecto,project.group_project_manager,1,1,1,1
+access_creativeminds_proyect_user,access.creativeminds.proyecto.user,model_creativeminds_proyecto,base.group_user,1,1,1,0
+access_creativeminds_proyect_manager,access.creativeminds.proyecto.manager,model_creativeminds_proyecto,project.group_project_manager,1,1,1,1
 access_creativeminds_recurso_user,access.creativeminds.recurso.user,model_creativeminds_recurso,base.group_user,1,1,1,0
 access_creativeminds_recurso_manager,access.creativeminds.recurso.manager,model_creativeminds_recurso,project.group_project_manager,1,1,1,1
 access_creativeminds_tarea_user,access.creativeminds.tarea.user,model_creativeminds_tarea,base.group_user,1,1,1,0

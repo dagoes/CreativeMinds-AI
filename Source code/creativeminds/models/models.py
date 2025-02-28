@@ -195,6 +195,13 @@ class Proyecto(models.Model):
         tareas_completadas = len(self.tareas_ids.filtered(lambda t: t.estado == 'completada'))
         self.porcentaje_progreso = (tareas_completadas / total_tareas * 100) if total_tareas > 0 else 0.0
  
+    def activar_proyecto(self):
+        if self.estado in ['planificacion']:
+            raise ValidationError("El proyecto ya está activado.")
+        self.write({'estado': 'en_progreso'})
+        # Notificar al responsable
+        self.enviar_notificacion_proyecto(tipo_notificacion='estado')
+
     def detener_proyecto(self):
         if self.estado in ['finalizado', 'detenido']:
             raise ValidationError("El proyecto ya está finalizado o detenido.")
