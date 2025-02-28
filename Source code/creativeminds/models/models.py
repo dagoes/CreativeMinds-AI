@@ -376,7 +376,7 @@ class Empleado(models.Model):
 
     empleado_id = fields.Integer(string='ID',required=True)
     nombre = fields.Char(string='Nombre', required=True)
-    dni = fields.Char(string ='DNI',size = 9,)
+    dni = fields.Char(string ='DNI',size = 9, required=True)
     apellido1  = fields.Char(string='Primer apellido')
     apellido2  = fields.Char(string='Sgundo apellido')
     fecha_nacimiento = fields.Date(string='Fecha de nacimiento')
