@@ -213,7 +213,6 @@
                                 <field name="proyecto_id"/>
                             </tree>
                     </field>
-                  </field>
                 </sheet>
                 <div class="oe_chatter">
                   <field name="message_ids" widget="mail_thread"/>
@@ -353,6 +352,13 @@
         parent="menu_creativeminds_proyecto_root"
         action="action_creativeminds_proyecto"
         sequence="10"/>
+
+    <menuitem 
+        id="menu_projects_projects" 
+        name="Ver proyectos"
+        parent="menu_projects"
+        action="action_creativeminds_proyecto"
+        sequence="12"/>
         
     <menuitem 
         id="menu_project_tasks" 
