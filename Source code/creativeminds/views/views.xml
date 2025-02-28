@@ -213,7 +213,6 @@
                                 <field name="proyecto_id"/>
                             </tree>
                     </field>
-                  </field>
                 </sheet>
                 <div class="oe_chatter">
                   <field name="message_ids" widget="mail_thread"/>
