@@ -2,7 +2,6 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import date
 
-
 class Proyecto(models.Model):
     _name = 'creativeminds.proyecto'
     _description = 'Proyecto'
