@@ -184,7 +184,8 @@
                     <field name="recursos_ids" widget="Many2many">
                             <tree>
                                 <field name="horas_asignadas"/>
-                                <field name="proyecto_id"/>
+                                <field name="fecha_inicio"/>
+                                <field name="fecha_fin"/>
                             </tree>
                     </field>
                 </sheet>
