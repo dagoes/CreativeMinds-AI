@@ -296,7 +296,6 @@
         <field name="name">Recursos</field>
         <field name="res_model">creativeminds.recurso</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('proyecto_id', '=', active_id)]</field>
     </record>
 
     <record id="action_creativeminds_employee" model="ir.actions.act_window">
