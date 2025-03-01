@@ -276,6 +276,17 @@ class Proyecto(models.Model):
             'target': 'current',
         }
 
+    # Para ver recursos del proyecto
+    def ver_miembros(self):
+        return {
+            'name': 'Recursos del Proyecto',
+            'type': 'ir.actions.act_window',
+            'res_model': 'creativeminds.recurso',
+            'view_mode': 'tree,form',
+            'domain': [('proyecto_id', '=', self.id)],
+            'target': 'current',
+        }
+
     # Para ver miembros del proyecto
     def ver_miembros(self):
         return {
