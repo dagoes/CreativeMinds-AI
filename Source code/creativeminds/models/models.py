@@ -3,7 +3,6 @@ from odoo.exceptions import ValidationError
 from datetime import date
 import re
 
-
 class Proyecto(models.Model):
     _name = 'creativeminds.proyecto'
     _description = 'Proyecto'
