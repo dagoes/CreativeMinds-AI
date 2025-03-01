@@ -29,6 +29,7 @@
                     </group>
                     <group>
                         <field name="tareas_ids"/>
+                        <field name="recursos_ids"/>
                         <field name="riesgos" />
                         <field name="hitos" />
                         <field name="dependencias" />
