@@ -325,13 +325,18 @@ class Tarea(models.Model):
     nombre = fields.Char(string='Nombre de la Tarea', required=True)
     descripcion = fields.Text(string='Descripción')
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')
-    fecha_comienzo = fields.Date(string='Fecha de Inicio')
-    fecha_final = fields.Date(string='Fecha de Finalización')
+    fecha_inicio = fields.Date(string='Fecha de Inicio')
+    fecha_fin = fields.Date(string='Fecha de Finalización')
     estado = fields.Selection([
         ('pendiente', 'Por hacer'),
         ('en_progreso', 'En progreso'),
         ('completada', 'Completada'),
     ], string='Estado', default='pendiente')
+
+    @api.constrains('fecha_inicio', 'fecha_fin')
+    def _verificar_fechas_tarea(self):
+        if self.fecha_inicio and self.fecha_fin and self.fecha_inicio > self.fecha_fin:
+            raise ValidationError("La fecha de inicio no puede ser posterior a la fecha de finalización.")
 
 
 #Indicadores de Desempeño
