@@ -29,7 +29,6 @@
                     </group>
                     <group>
                         <field name="tareas_ids"/>
-                        <field name="recursos_ids"/>
                         <field name="riesgos" />
                         <field name="hitos" />
                         <field name="dependencias" />
@@ -181,11 +180,10 @@
                             <field name="estado" />
                         </tree>
                     </field>
-                    <field name="recursos_ids" widget="Many2many">
+                    <field name="horas_trabajadas_ids" widget="Many2one">
                             <tree>
-                                <field name="horas_asignadas"/>
-                                <field name="fecha_inicio"/>
-                                <field name="fecha_fin"/>
+                                <field name="horas"/>
+                                <field name="proyecto_id"/>
                             </tree>
                     </field>
                 </sheet>
@@ -333,21 +331,21 @@
         name="Ver proyectos"
         parent="menu_projects"
         action="action_creativeminds_proyecto"
-        sequence="15"/>
+        sequence="12"/>
         
     <menuitem 
         id="menu_project_tasks" 
         name="Ver Tareas"
         parent="menu_projects"
         action="action_creativeminds_task2"
-        sequence="20"/>
+        sequence="15"/>
         
     <menuitem 
         id="menu_project_resource" 
-        name="Ver Tareas"
+        name="Ver Recursos"
         parent="menu_projects"
         action="action_creativeminds_resource"
-        sequence="25"/>
+        sequence="15"/>
 
     <menuitem 
         id="menu_employees" 

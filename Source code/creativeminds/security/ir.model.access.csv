@@ -12,5 +12,7 @@ access_creativeminds_empleado_user,access.creativeminds.empleado.user,model_crea
 access_creativeminds_empleado_manager,access.creativeminds.empleado.manager,model_creativeminds_empleado,hr.group_hr_manager,1,1,1,1
 access_creativeminds_equipo_user,access.creativeminds.equipo.user,model_creativeminds_equipo,base.group_user,1,0,0,0
 access_creativeminds_equipo_manager,access.creativeminds.equipo.manager,model_creativeminds_equipo,project.group_project_manager,1,1,1,1
+access_creativeminds_horas_trabajadas_user,access.creativeminds.equipo.user,model_creativeminds_horas_trabajadas,base.group_user,1,0,0,0
+access_creativeminds_horas_trabajadas_manager,access.creativeminds.equipo.manager,model_creativeminds_horas_trabajadas,project.group_project_manager,1,1,1,1
 access_creativeminds_control_panel_user,access.creativeminds.control.panel.user,model_creativeminds_control_panel,base.group_user,1,0,0,0
 access_creativeminds_control_panel_manager,access.creativeminds.control.panel.manager,model_creativeminds_control_panel,project.group_project_manager,1,1,1,1
