@@ -389,8 +389,8 @@ class HorasTrabajadas(models.Model):
     _description = 'Horas Trabajadas'
 
     horas = fields.Float("Horas Trabajadas")
-    empleado_id = fields.Many2one('creativeminds.empleado', string="Empleado")
-    proyecto_id = fields.Many2one('creativeminds.proyecto', string="Proyecto")
+    empleado_id = fields.Many2one('creativeminds.empleado', string="Empleado", required=True)
+    proyecto_id = fields.Many2one('creativeminds.proyecto', string="Proyecto", required=True)
     fecha = fields.Date("Fecha de Registro")
     
     @api.model
@@ -402,6 +402,10 @@ class HorasTrabajadas(models.Model):
             ], limit=1)
             if existing_record:
                 raise ValidationError("Ya existe un registro de horas trabajadas para este proyecto y empleado.")
+
+        if not values.get("Fecha"):
+            values['fecha'] = fields.Date.today()
+
         return super(HorasTrabajadas, self).create(values)
 
 class Equipo(models.Model):
