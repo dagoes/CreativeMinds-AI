@@ -215,6 +215,8 @@ class Proyecto(models.Model):
         }
 
     def duplicar_proyecto(self, proyecto_id):
+        if not proyecto_id:
+            raise ValidationError("No se ha especificado el ID del proyecto.")
         proyecto = self.browse(proyecto_id)
         if not proyecto.exists():
             raise ValidationError("El proyecto especificado no existe.")
