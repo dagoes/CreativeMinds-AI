@@ -277,7 +277,7 @@ class Proyecto(models.Model):
         }
 
     # Para ver recursos del proyecto
-    def ver_miembros(self):
+    def ver_recursos(self):
         return {
             'name': 'Recursos del Proyecto',
             'type': 'ir.actions.act_window',
