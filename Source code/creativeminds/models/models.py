@@ -372,8 +372,8 @@ class Empleado(models.Model):
         ('parcial', 'Parcialmente Disponible'),
         ('no_disponible', 'No Disponible')
     ], string='Disponibilidad', default='disponible')
-    horas_trabajadas_ids = fields.One2many(
-        'creativeminds.horas_trabajadas',
+    recursos_ids = fields.One2many(
+        'creativeminds.recursos',
         'empleado_id',
         string="Horas Trabajadas"
     )
@@ -388,30 +388,6 @@ class Empleado(models.Model):
     _sql_constraints = [
         ('DNI_unico', 'UNIQUE(dni)', "El DNI debe ser único")
     ]
-
-class HorasTrabajadas(models.Model):
-    _name = 'creativeminds.horas_trabajadas'
-    _description = 'Horas Trabajadas'
-
-    horas = fields.Float("Horas Trabajadas")
-    empleado_id = fields.Many2one('creativeminds.empleado', string="Empleado", required=True)
-    proyecto_id = fields.Many2one('creativeminds.proyecto', string="Proyecto", required=True)
-    fecha = fields.Date("Fecha de Registro")
-    
-    @api.model
-    def create(self, values):
-        if values.get('empleado_id') and values.get('proyecto_id'):
-            existing_record = self.search([
-                ('empleado_id', '=', values['empleado_id']),
-                ('proyecto_id', '=', values['proyecto_id']),
-            ], limit=1)
-            if existing_record:
-                raise ValidationError("Ya existe un registro de horas trabajadas para este proyecto y empleado.")
-
-        if not values.get("Fecha"):
-            values['fecha'] = fields.Date.today()
-
-        return super(HorasTrabajadas, self).create(values)
 
 class Equipo(models.Model):
     _name = 'creativeminds.equipo'
