@@ -388,12 +388,11 @@ class Empleado(models.Model):
     _description = 'Empleados del Proyecto'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    # Campos de datos
-    empleado_id = fields.Integer(string='ID',required=True)
     partner_id = fields.Many2one('res.partner', string='Contacto Asociado')
-    nombre = fields.Char(string='Nombre', required=True)
+    # Campos de datos
+    name = fields.Char(string='Nombre', required=True)
     apellido1  = fields.Char(string='Primer apellido')
-    apellido2  = fields.Char(string='Sgundo apellido')
+    apellido2  = fields.Char(string='Segundo apellido')
     dni = fields.Char(string='DNI', size=9, required=True)  # DNI del empleado, con una longitud fija de 9 caracteres, obligatorio.
     fecha_nacimiento = fields.Date(string='Fecha de nacimiento')  # Fecha de nacimiento del empleado.
     fecha_incorporacion = fields.Date(string='Fecha incorporación', default=lambda self: fields.Datetime.now(), readonly=True)  # Fecha de incorporación del empleado, con valor predeterminado de la fecha y hora actual.
