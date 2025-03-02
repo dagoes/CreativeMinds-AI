@@ -40,7 +40,7 @@
                         <p><button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
                         <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
                         <button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
-                        <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': proyecto_id}" /></p>
+                        <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': active_id}" /></p>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -77,7 +77,7 @@
         <field name="model">creativeminds.proyecto</field>
         <field name="arch" type="xml">
             <kanban js_class="project_kanban" quick_create="1" create="1" edit="1" delete="1">
-                <field name="proyecto_id" />
+                <field name="id" />
                 <field name="nombre" />
                 <field name="estado" />
                 <field name="fecha_inicio" />
@@ -95,11 +95,11 @@
                             <p><small>Prioridad: <field name="prioridad" /></small></p>
                             <p><small>Costo Total: <field name="costo_total" /></small></p>
                             <p><small>Costo Total de Recursos: <field name="costo_total_recursos" /></small></p>
-                            <p><button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
-                                <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" /></p>
+                            <p><button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" context="{'proyecto_id': id}" />
+                                <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': id}" /></p>
                             <div class="o_kanban_footer">
-                                <p><button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
-                                <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': proyecto_id}" /></p>
+                                <p><button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': id}" />
+                                <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': id}" /></p>
                             </div>
                         </div>
                     </t>
