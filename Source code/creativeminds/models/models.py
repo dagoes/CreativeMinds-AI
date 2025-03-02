@@ -386,7 +386,7 @@ class KPI(models.Model):
 class Empleado(models.Model):
     _name = 'creativeminds.empleado'
     _description = 'Empleados del Proyecto'
-    _inherit = ['res.partner', 'mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     # Campos de datos
     empleado_id = fields.Integer(string='ID',required=True)
