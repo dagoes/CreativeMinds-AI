@@ -37,9 +37,9 @@
                         <field name="recordatorios_automaticos" />
                     </group>
                     <group>
-                        <p><button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
-                        <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
-                        <button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
+                        <p><button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" context="{'proyecto_id': active_id}" />
+                        <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': active_id}" />
+                        <button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': active_id}" />
                         <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': active_id}" /></p>
                     </group>
                 </sheet>
