@@ -319,7 +319,7 @@
     <!-- Menus -->
     <menuitem 
         id="menu_creativeminds_proyecto_root" 
-        name="CreativeMinds AI"
+        name="CreativeMinds"
         web_icon="creativeminds_proyecto,static/description/icon.png"
         sequence="10"/>
 
