@@ -123,10 +123,10 @@
         <field name="arch" type="xml">
             <tree string="Empleados">
                 <field name="id"/>
-                <field name="name" />
+                <field name="nombre" />
+                <field name="apellido1"/>
+                <field name="apellido2" />
                 <field name="dni"/>
-                <field name="phone"/>
-                <field name="email" />
                 <field name="fecha_nacimiento" />
                 <field name="fecha_incorporacion" />
                 <field name="puesto" />
@@ -162,17 +162,17 @@
                     <separator string="Datos personales" colspan="4"/>
                     <group col="3">
                         <group >
-                            <field name="name"/>
+                            <field name="nombre"/>
                             <field name="fecha_nacimiento"/>
                             <field name="fecha_incorporacion"/>
                         </group>
                         <group >
-                            <field name="phone"/>
+                            <field name="apellido1"/>
                             <field name="departamento" />
                             <field name="puesto" />
                         </group>
                         <group >
-                            <field name="email" />
+                            <field name="apellido2" />
                             <field name="disponibilidad" />
                         </group>
                     </group>
