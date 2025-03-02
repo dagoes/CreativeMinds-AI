@@ -284,6 +284,7 @@ class Proyecto(models.Model):
             'res_model': 'creativeminds.recurso',
             'view_mode': 'tree,form',
             'domain': [('proyecto_id', '=', self.id)],
+            'context': {'default_proyecto_id': self.id},
             'target': 'current',
         }
 
@@ -295,6 +296,7 @@ class Proyecto(models.Model):
             'res_model': 'creativeminds.empleado',
             'view_mode': 'tree,form',
             'domain': [('proyecto_id', '=', self.id)],
+            'context': {'default_proyecto_id': self.id},
             'target': 'current',
         }
 

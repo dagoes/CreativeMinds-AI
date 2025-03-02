@@ -37,8 +37,10 @@
                         <field name="recordatorios_automaticos" />
                     </group>
                     <group>
-                        <button string="Duplicar Proyecto" type="object" class="btn-primary" 
-                        name="duplicar_proyecto" context="{'proyecto_id': active_id}"/>
+                        <p><button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
+                        <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
+                        <button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
+                        <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': proyecto_id}" /></p>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -96,8 +98,8 @@
                             <p><button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
                                 <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" /></p>
                             <div class="o_kanban_footer">
-                                <button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
-                                <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': proyecto_id}" />
+                                <p><button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
+                                <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': proyecto_id}" /></p>
                             </div>
                         </div>
                     </t>
