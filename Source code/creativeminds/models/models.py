@@ -1,7 +1,7 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-from datetime import date
-import re
+from odoo import models, fields, api  # Importa los módulos necesarios de Odoo para la creación de modelos y campos.
+from odoo.exceptions import ValidationError  # Importa la excepción ValidationError para manejar errores de validación.
+from datetime import date  # Importa el módulo date para trabajar con fechas.
+import re  # Importa el módulo re para trabajar con expresiones regulares.
 
 class Proyecto(models.Model):
     _name = 'creativeminds.proyecto'  # Nombre técnico del modelo en Odoo.
@@ -386,14 +386,10 @@ class KPI(models.Model):
 class Empleado(models.Model):
     _name = 'creativeminds.empleado'
     _description = 'Empleados del Proyecto'
-    _inherit = ['mail.thread']
+    _inherit = ['res.partner', 'mail.thread', 'mail.activity.mixin']
 
     # Campos de datos
-    empleado_id = fields.Integer(string='ID', required=True)  # ID único del empleado, obligatorio.
-    nombre = fields.Char(string='Nombre', required=True)  # Nombre del empleado, obligatorio.
     dni = fields.Char(string='DNI', size=9, required=True)  # DNI del empleado, con una longitud fija de 9 caracteres, obligatorio.
-    apellido1 = fields.Char(string='Primer apellido')  # Primer apellido del empleado.
-    apellido2 = fields.Char(string='Segundo apellido')  # Segundo apellido del empleado.
     fecha_nacimiento = fields.Date(string='Fecha de nacimiento')  # Fecha de nacimiento del empleado.
     fecha_incorporacion = fields.Date(string='Fecha incorporación', default=lambda self: fields.Datetime.now(), readonly=True)  # Fecha de incorporación del empleado, con valor predeterminado de la fecha y hora actual.
     foto = fields.Image(string='Foto', max_width=200, max_height=200)  # Foto del empleado, con límites de tamaño.
@@ -403,7 +399,8 @@ class Empleado(models.Model):
     departamento = fields.Char(string='Departamento')  # Departamento en el que trabaja el empleado.
     puesto = fields.Char(string='Puesto')  # Puesto o cargo del empleado en la empresa.
     equipo_id = fields.Many2many('creativeminds.equipo', string='Equipos')  # Relación de muchos a muchos con los equipos en los que está asignado el empleado.
-
+    tareas_ids = fields.One2many('creativeminds.tarea', 'proyecto_id', string='Tareas')  # Tareas asociadas al empleado
+    
     # Estado de disponibilidad
     disponibilidad = fields.Selection([  # Campo para gestionar la disponibilidad del empleado.
         ('disponible', 'Disponible'),  # El empleado está disponible para trabajar.
@@ -425,6 +422,18 @@ class Empleado(models.Model):
         ('DNI_unico', 'UNIQUE(dni)', "El DNI debe ser único")  # Restricción de unicidad en el campo DNI.
     ]
 
+    @api.model
+    def create(self, vals):
+        record = super(Empleado, self).create(vals)
+        
+        # Enviar una notificación al crear el empleado
+        record.message_post(
+            body=f"Se ha creado un nuevo empleado: {record.name}.",
+            subject="Nuevo Empleado",
+            partner_ids=[record.partner_id.id]  # Enviamos el mensaje al partner (empleado) creado
+        )
+        return record
+    
 class Equipo(models.Model):
     _name = 'creativeminds.equipo'
     _description = 'Equipos de Trabajo'
