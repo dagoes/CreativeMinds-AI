@@ -40,13 +40,41 @@
                         <p><button name="ver_tareas" string="Ver Tareas" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
                         <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
                         <button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
-                        <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': proyecto_id}" /></p>
+                        <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" /></p>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" />
                     <field name="message_ids" widget="mail_thread" />
                 </div>
+            </form>
+        </field>
+    </record>
+	
+	<record id="view_creativeminds_control_panel_dashboard" model="ir.ui.view">
+        <field name="name">Panel de Control Dashboard</field>
+        <field name="model">creativeminds.control.panel</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="o_dashboard_container">
+                        <h1 class="text-center">Panel de Control de CreativeMinds</h1>
+                        <!-- Botón para cargar datos desde la API -->
+                        <div class="text-center" style="margin-bottom: 15px;">
+                            <button name="action_load_data_from_api" type="object" string="Cargar Datos" class="btn-primary"/>
+                        </div>
+                        <div class="row mt16">
+                            <div class="col-md-12">
+                                <div class="alert alert-info text-center">
+                                    <h3>Esperando conexión con API externa</h3>
+                                    <p>Este panel mostrará automáticamente las métricas y KPIs cuando la API esté conectada.</p>
+                                    <p>No se requiere la creación manual de registros ya que los datos se generan automáticamente basados en proyectos, empleados, tareas y equipos.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Aquí irá el contenido del dashboard cuando la API esté conectada -->
+                    </div>
+                </sheet>
             </form>
         </field>
     </record>
@@ -99,7 +127,7 @@
                                 <button name="ver_miembros" string="Ver Miembros" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" /></p>
                             <div class="o_kanban_footer">
                                 <p><button name="ver_recursos" string="Ver Recursos" type="object" class="btn-secondary" context="{'proyecto_id': proyecto_id}" />
-                                <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" context="{'proyecto_id': proyecto_id}" /></p>
+                                <button name="duplicar_proyecto" string="Duplicar Proyecto" type="object" class="btn-primary" /></p>
                             </div>
                         </div>
                     </t>
@@ -107,6 +135,17 @@
             </kanban>
         </field>
     </record>
+	
+	<record id="view_creativeminds_control_panel_tree" model="ir.ui.view">
+		<field name="name">Panel de Control</field>
+		<field name="model">creativeminds.control.panel</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="nombre" />
+                <field name="proyectos_ids" />
+			</tree>
+		</field>
+	</record>
 
     <record id="view_creativeminds_employees_tree" model="ir.ui.view">
         <field name="name">Lista de empleados</field>
@@ -114,7 +153,7 @@
         <field name="arch" type="xml">
             <tree string="Empleados">
                 <field name="empleado_id"/>
-                <field name="nombre" />
+                <field name="name" />
                 <field name="dni"/>
                 <field name="apellido1"/>
                 <field name="apellido2" />
@@ -160,8 +199,9 @@
                             <field name="puesto" />
                         </group>
                         <group >
-                            <field name="nombre" />
+                            <field name="name" />
                             <field name="disponibilidad" />
+							<field name="partner_id"/>
                         </group>
                     </group>
                     <separator string="Equipos" colspan="4"/>
@@ -212,16 +252,7 @@
         </field>
     </record>
 
-    <record id="view_creativeminds_control_panel_tree" model="ir.ui.view">
-        <field name="name">Panel de Control</field>
-        <field name="model">creativeminds.control.panel</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="nombre" />
-                <field name="proyectos_ids" />
-            </tree>
-        </field>
-    </record>
+    
 
     <record id="view_creativeminds_task_tree" model="ir.ui.view">
         <field name="name">Lista de tareas</field>
@@ -276,11 +307,15 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <record id="action_creativeminds_control_panel" model="ir.actions.act_window">
-        <field name="name">Panel de Control</field>
-        <field name="res_model">creativeminds.control.panel</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+    <!-- Actualizar la acción para mostrar solo la vista de dashboard -->
+	<record id="action_creativeminds_control_panel" model="ir.actions.act_window">
+		<field name="name">Panel de Control</field>
+		<field name="res_model">creativeminds.control.panel</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="view_creativeminds_control_panel_dashboard"/>
+		<field name="target">current</field>
+		<field name="limit">1</field>
+	</record>
 
     <record id="action_creativeminds_task" model="ir.actions.act_window">
         <field name="name">Tareas de Proyecto</field>
@@ -319,7 +354,7 @@
     <!-- Menus -->
     <menuitem 
         id="menu_creativeminds_proyecto_root" 
-        name="CreativeMinds AI"
+        name="CreativeMinds"
         web_icon="creativeminds_proyecto,static/description/icon.png"
         sequence="10"/>
 
