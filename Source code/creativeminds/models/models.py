@@ -593,7 +593,7 @@ class PanelDeControl(models.Model):
         return True
     
     @api.model
-    def load_data_from_api(self):
+    def action_load_data_from_api(self):
         """Carga datos desde la API externa y actualiza registros en Odoo."""
         url = "http://127.0.0.1:5000/api/dashboard"  # Endpoint correcto
         try:
