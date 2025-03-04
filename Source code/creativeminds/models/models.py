@@ -2,10 +2,10 @@ from odoo import models, fields, api  # Importa los módulos necesarios de Odoo 
 from odoo.exceptions import ValidationError  # Importa la excepción ValidationError para manejar errores de validación.
 from datetime import date  # Importa el módulo date para trabajar con fechas.
 import re  # Importa el módulo re para trabajar con expresiones regulares.
-from dateutil.relativedelta import relativedelta  
-from odoo.exceptions import UserError
-import requests
-import json
+from dateutil.relativedelta import relativedelta  # Para realizar operaciones con fechas, como sumar o restar periodos.
+from odoo.exceptions import UserError  # Para generar errores personalizados en Odoo.
+import requests  # Para realizar solicitudes HTTP.
+import json  # Para trabajar con datos en formato JSON.
 
 class Proyecto(models.Model):
     _name = 'creativeminds.proyecto'  # Nombre técnico del modelo en Odoo.
@@ -420,6 +420,7 @@ class Tarea(models.Model):
     responsable_id = fields.Many2one('creativeminds.empleado', string='Responsable')  # Relación con el empleado que es responsable de la tarea.
     fecha_inicio = fields.Date(string='Fecha de Inicio')  # Fecha en la que la tarea debería comenzar.
     fecha_fin = fields.Date(string='Fecha de Finalización')  # Fecha en la que la tarea debe finalizar.
+    tareas_ids = fields.One2many('creativeminds.tarea', string='Tareas')  # Tareas asociadas al empleado
     estado = fields.Selection([  # Selección de estados de la tarea.
         ('pendiente', 'Por hacer'),  # Estado cuando la tarea aún no se ha comenzado.
         ('en_progreso', 'En progreso'),  # Estado cuando la tarea está siendo trabajada.
@@ -448,26 +449,19 @@ class Empleado(models.Model):
     _description = 'Empleados del Proyecto'
     _inherit = ['mail.thread']
 
-    empleado_id = fields.Integer(string='ID',required=True)
-    partner_id = fields.Many2one('res.partner', string='Contacto Asociado')
-    name = fields.Char(string='Nombre', required=True)
-    dni = fields.Char(string ='DNI',size = 9, required=True)
-    apellido1  = fields.Char(string='Primer apellido')
-    apellido2  = fields.Char(string='Segundo apellido')
-    fecha_nacimiento = fields.Date(string='Fecha de nacimiento')
-    fecha_incorporacion  = fields.Date(string='Fecha incorporacion',default=lambda self: fields.Datetime.now(),readonly = True,)
-    foto  = fields.Image(string='Foto',max_width=200,max_height=200,)
-    proyecto_id = fields.Many2many('creativeminds.proyecto', string='Proyectos')
-    departamento = fields.Char(string='Departamento')
-    puesto = fields.Char(string='Puesto')
-    equipo_id = fields.Many2many('creativeminds.equipo', string='Equipos')
-    disponibilidad = fields.Selection([
-        ('disponible', 'Disponible'),
-        ('asignado', 'Asignado'),
-        ('parcial', 'Parcialmente Disponible'),
-        ('no_disponible', 'No Disponible')
-    ], string='Disponibilidad', default='disponible')
-    
+    empleado_id = fields.Integer(string='ID', required=True)  # Campo entero para almacenar el ID del empleado (requerido).
+    partner_id = fields.Many2one('res.partner', string='Contacto Asociado')  # Relación Many2one con el modelo 'res.partner' para asociar un contacto.
+    name = fields.Char(string='Nombre', required=True)  # Campo de texto para almacenar el nombre del empleado (requerido).
+    dni = fields.Char(string='DNI', size=9, required=True)  # Campo de texto para almacenar el DNI del empleado (requerido, con un tamaño máximo de 9 caracteres).
+    apellido1 = fields.Char(string='Primer apellido')  # Campo de texto para almacenar el primer apellido del empleado.
+    apellido2 = fields.Char(string='Segundo apellido')  # Campo de texto para almacenar el segundo apellido del empleado.
+    fecha_nacimiento = fields.Date(string='Fecha de nacimiento')  # Campo de fecha para almacenar la fecha de nacimiento del empleado.
+    fecha_incorporacion = fields.Date(string='Fecha incorporacion', default=lambda self: fields.Datetime.now(), readonly=True)  # Fecha de incorporación con valor por defecto de la fecha y hora actual, solo lectura.
+    foto = fields.Image(string='Foto', max_width=200, max_height=200)  # Campo de imagen para almacenar la foto del empleado con un tamaño máximo de 200x200 píxeles.
+    proyecto_id = fields.Many2many('creativeminds.proyecto', string='Proyectos')  # Relación Many2many con el modelo 'creativeminds.proyecto' para asociar proyectos al empleado.
+    departamento = fields.Char(string='Departamento')  # Campo de texto para almacenar el departamento del empleado.
+    puesto = fields.Char(string='Puesto')  # Campo de texto para almacenar el puesto del empleado.
+    equipo_id = fields.Many2many('creativeminds.equipo', string='Equipos')  # Relación Many2many con el modelo 'creativeminds.equipo' para asociar equipos al empleado.
     # Estado de disponibilidad
     disponibilidad = fields.Selection([  # Campo para gestionar la disponibilidad del empleado.
         ('disponible', 'Disponible'),  # El empleado está disponible para trabajar.
